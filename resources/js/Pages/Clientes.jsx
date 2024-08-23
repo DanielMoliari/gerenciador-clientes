@@ -60,77 +60,145 @@ function Clientes({ clientes }) {
                     </div>
                 </div>
 
-                <div className="mb-4">
-                    <div className="input-group">
-                        <select
-                            className="form-select"
-                            value={searchField}
-                            onChange={(e) => setSearchField(e.target.value)}
-                        >
-                            <option value="nome">Nome</option>
-                            <option value="email">Email</option>
-                            <option value="cpf">CPF</option>
-                        </select>
-                        <input
-                            type="text"
-                            className="form-control"
-                            placeholder={`Buscar por ${searchField}`}
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                    </div>
-                </div>
-
-                <div className="row">
-                    {filteredClientes.map((cliente) => (
-                        <div key={cliente.id} className="col-md-4 mb-4">
-                            <div className="card shadow-sm h-100">
-                                <div className="card-body">
-                                    <h5 className="card-title text-dark fw-semibold">
-                                        {cliente.nome}
-                                    </h5>
-                                    <p className="card-text mb-2">
-                                        <span className="fw-bold">Email:</span>{" "}
-                                        {cliente.email}
-                                    </p>
-                                    <p className="card-text">
-                                        <span className="fw-bold">CPF:</span>{" "}
-                                        {cliente.cpf}
-                                    </p>
-                                    <div className="d-flex justify-content-end">
-                                        <Link
-                                            href={`/clientes/${cliente.id}`}
-                                            className="btn btn-outline-dark"
-                                        >
-                                            Ver Detalhes
-                                        </Link>
-                                    </div>
-                                </div>
+                {clientes.data.length > 0 && (
+                    <>
+                        <div className="mb-4">
+                            <div className="input-group">
+                                <select
+                                    className="form-select"
+                                    value={searchField}
+                                    onChange={(e) =>
+                                        setSearchField(e.target.value)
+                                    }
+                                >
+                                    <option value="nome">Nome</option>
+                                    <option value="email">Email</option>
+                                    <option value="cpf">CPF</option>
+                                </select>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder={`Buscar por ${searchField}`}
+                                    value={searchTerm}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        if (searchField === "cpf") {
+                                            // Permitir apenas números para CPF
+                                            const numericValue = value.replace(
+                                                /\D/g,
+                                                ""
+                                            );
+                                            setSearchTerm(numericValue);
+                                        } else if (searchField === "nome") {
+                                            // Permitir apenas letras e espaços para Nome
+                                            const lettersValue = value.replace(
+                                                /[^a-zA-Z\s]/g,
+                                                ""
+                                            );
+                                            setSearchTerm(lettersValue);
+                                        } else {
+                                            setSearchTerm(value);
+                                        }
+                                    }}
+                                />
                             </div>
                         </div>
-                    ))}
-                </div>
 
-                <div className="d-flex justify-content-center py-4">
-                    {clientes.links.map((link) =>
-                        link.url ? (
-                            <Link
-                                key={link.label}
-                                href={link.url}
-                                dangerouslySetInnerHTML={{ __html: link.label }}
-                                className={`btn btn-outline-dark mx-2 ${
-                                    link.active ? "active" : ""
-                                }`}
-                            />
+                        {filteredClientes.length > 0 ? (
+                            <>
+                                <div className="row">
+                                    {filteredClientes.map((cliente) => (
+                                        <div
+                                            key={cliente.id}
+                                            className="col-md-4 mb-4"
+                                        >
+                                            <div className="card shadow-sm h-100">
+                                                <div className="card-body">
+                                                    <h5 className="card-title text-dark fw-semibold">
+                                                        {cliente.nome}
+                                                    </h5>
+                                                    <p className="card-text mb-2">
+                                                        <span className="fw-bold">
+                                                            Email:
+                                                        </span>{" "}
+                                                        {cliente.email}
+                                                    </p>
+                                                    <p className="card-text">
+                                                        <span className="fw-bold">
+                                                            CPF:
+                                                        </span>{" "}
+                                                        {cliente.cpf}
+                                                    </p>
+                                                    <div className="d-flex justify-content-end">
+                                                        <Link
+                                                            href={`/clientes/${cliente.id}`}
+                                                            className="btn btn-outline-dark"
+                                                        >
+                                                            Ver Detalhes
+                                                        </Link>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="d-flex justify-content-center py-4">
+                                    {clientes.links.map((link) =>
+                                        link.url ? (
+                                            <Link
+                                                key={link.label}
+                                                href={link.url}
+                                                dangerouslySetInnerHTML={{
+                                                    __html: link.label,
+                                                }}
+                                                className={`btn btn-outline-dark mx-2 ${
+                                                    link.active ? "active" : ""
+                                                }`}
+                                            />
+                                        ) : (
+                                            <span
+                                                key={link.label}
+                                                dangerouslySetInnerHTML={{
+                                                    __html: link.label,
+                                                }}
+                                                className="btn btn-light mx-2"
+                                            />
+                                        )
+                                    )}
+                                </div>
+                            </>
                         ) : (
-                            <span
-                                key={link.label}
-                                dangerouslySetInnerHTML={{ __html: link.label }}
-                                className="btn btn-light mx-2"
-                            />
-                        )
+                            <div className="alert alert-info" role="alert">
+                                <h4 className="alert-heading">
+                                    Nenhum Resultado Encontrado
+                                </h4>
+                                <p>
+                                    Não encontramos nenhum cliente que
+                                    corresponda aos critérios de busca atuais.
+                                </p>
+                                <hr />
+                                <p className="mb-0">
+                                    Tente ajustar os filtros ou buscar com
+                                    outros termos.
+                                </p>
+                            </div>
+                        )}
+                    </>
+                )}
+
+                {clientes.data.length === 0 &&
+                    filteredClientes.length === 0 && (
+                        <div className="alert alert-warning" role="alert">
+                            <h4 className="alert-heading">
+                                Nenhum Cliente Registrado
+                            </h4>
+                            <p>
+                                Atualmente, não há clientes registrados. Volte
+                                mais tarde para verificar.
+                            </p>
+                        </div>
                     )}
-                </div>
             </div>
         </>
     );

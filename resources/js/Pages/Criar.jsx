@@ -1,5 +1,7 @@
 import { Head, useForm } from "@inertiajs/react";
 import Layout from "../Layouts/Layout";
+import { useState } from "react";
+import { validarCPF } from "../Utils/validators"; // Ajuste o caminho conforme necessário
 
 function Criar() {
     const { data, setData, post, errors, processing } = useForm({
@@ -8,9 +10,49 @@ function Criar() {
         cpf: "",
     });
 
+    const [localErrors, setLocalErrors] = useState({});
+
+    function handleNomeChange(e) {
+        const value = e.target.value.replace(/[^a-zA-Z\s]/g, "");
+        setData("nome", value);
+    }
+
+    function handleCpfChange(e) {
+        const value = e.target.value.replace(/\D/g, "");
+        setData("cpf", value);
+    }
+
+    function validateForm() {
+        let errors = {};
+
+        if (!data.nome.trim()) {
+            errors.nome = "Nome é obrigatório.";
+        }
+
+        if (!data.email.trim()) {
+            errors.email = "Email é obrigatório.";
+        } else if (!/\S+@\S+\.\S+/.test(data.email)) {
+            errors.email = "Email inválido.";
+        }
+
+        if (!data.cpf.trim()) {
+            errors.cpf = "CPF é obrigatório.";
+        } else if (data.cpf.length !== 11) {
+            errors.cpf = "CPF deve ter 11 dígitos.";
+        } else if (!validarCPF(data.cpf)) {
+            errors.cpf = "CPF inválido.";
+        }
+
+        setLocalErrors(errors);
+        return Object.keys(errors).length === 0;
+    }
+
     function submit(e) {
         e.preventDefault();
-        post("/clientes");
+
+        if (validateForm()) {
+            post("/clientes");
+        }
     }
 
     return (
@@ -32,17 +74,17 @@ function Criar() {
                                 id="nome"
                                 type="text"
                                 value={data.nome}
-                                onChange={(e) =>
-                                    setData("nome", e.target.value)
-                                }
+                                onChange={handleNomeChange}
                                 className={`form-control ${
-                                    errors.nome ? "is-invalid" : ""
+                                    localErrors.nome || errors.nome
+                                        ? "is-invalid"
+                                        : ""
                                 }`}
                                 placeholder="Digite o nome do cliente"
                             />
-                            {errors.nome && (
+                            {(localErrors.nome || errors.nome) && (
                                 <div className="invalid-feedback">
-                                    {errors.nome}
+                                    {localErrors.nome || errors.nome}
                                 </div>
                             )}
                         </div>
@@ -59,13 +101,15 @@ function Criar() {
                                     setData("email", e.target.value)
                                 }
                                 className={`form-control ${
-                                    errors.email ? "is-invalid" : ""
+                                    localErrors.email || errors.email
+                                        ? "is-invalid"
+                                        : ""
                                 }`}
                                 placeholder="Digite o email do cliente"
                             />
-                            {errors.email && (
+                            {(localErrors.email || errors.email) && (
                                 <div className="invalid-feedback">
-                                    {errors.email}
+                                    {localErrors.email || errors.email}
                                 </div>
                             )}
                         </div>
@@ -78,15 +122,17 @@ function Criar() {
                                 id="cpf"
                                 type="text"
                                 value={data.cpf}
-                                onChange={(e) => setData("cpf", e.target.value)}
+                                onChange={handleCpfChange}
                                 className={`form-control ${
-                                    errors.cpf ? "is-invalid" : ""
+                                    localErrors.cpf || errors.cpf
+                                        ? "is-invalid"
+                                        : ""
                                 }`}
                                 placeholder="Digite o CPF do cliente"
                             />
-                            {errors.cpf && (
+                            {(localErrors.cpf || errors.cpf) && (
                                 <div className="invalid-feedback">
-                                    {errors.cpf}
+                                    {localErrors.cpf || errors.cpf}
                                 </div>
                             )}
                         </div>

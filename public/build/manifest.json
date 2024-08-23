@@ -1,11 +1,9 @@
 {
-  "resources/js/app.jsx": {
-    "file": "assets/app-Chd_xGLK.js",
-    "name": "app",
-    "src": "resources/js/app.jsx",
-    "isEntry": true,
-    "css": [
-      "assets/app-DUEfxN0n.css"
-    ]
-  }
+    "resources/js/app.jsx": {
+        "file": "assets/app-D0FWhtHc.js",
+        "name": "app",
+        "src": "resources/js/app.jsx",
+        "isEntry": true,
+        "css": ["assets/app-DUEfxN0n.css"]
+    }
 }

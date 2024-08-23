@@ -1,5 +1,3 @@
-// validators.js
-
 /**
  * Função para validar o CPF.
  * @param {string} cpf
@@ -42,4 +40,67 @@ export function validarCPF(cpf) {
     }
 
     return resto === parseInt(cpf.substring(10, 11));
+}
+
+/**
+ * Função para formatar o texto do CPF.
+ * @param {string} cpf
+ * @returns {string}
+ */
+export const verCPF = (cpf) => {
+    return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+};
+
+/**
+ * Função para formatar o texto dos inputs CPF.
+ * @param {string} cpf
+ * @returns {string}
+ */
+export function formatarFormCPF(cpf) {
+    let value = cpf.replace(/\D/g, "");
+
+    if (value.length > 11) {
+        value = value.substring(0, 11);
+    }
+
+    if (value.length > 3 && value.length <= 6) {
+        value = value.replace(/(\d{3})(\d+)/, "$1.$2");
+    } else if (value.length > 6 && value.length <= 9) {
+        value = value.replace(/(\d{3})(\d{3})(\d+)/, "$1.$2.$3");
+    } else if (value.length > 9) {
+        value = value.replace(/(\d{3})(\d{3})(\d{3})(\d+)/, "$1.$2.$3-$4");
+    }
+
+    return value;
+}
+
+/**
+ * Função para validar os inputs de Criação e Edição de Clientes.
+ * @param {Array} data
+ * @returns {Array}
+ */
+export function validateForm(data) {
+    let errors = {};
+
+    if (!data.nome.trim()) {
+        errors.nome = "Nome é obrigatório.";
+    }
+
+    if (!data.email.trim()) {
+        errors.email = "Email é obrigatório.";
+    } else if (!/\S+@\S+\.\S+/.test(data.email)) {
+        errors.email = "Email inválido.";
+    }
+
+    const cpfNumeros = data.cpf.replace(/\D/g, "");
+
+    if (!cpfNumeros.trim()) {
+        errors.cpf = "CPF é obrigatório.";
+    } else if (cpfNumeros.length !== 11) {
+        errors.cpf = "CPF deve ter 11 dígitos.";
+    } else if (!validarCPF(cpfNumeros)) {
+        errors.cpf = "CPF inválido.";
+    }
+
+    return errors;
 }

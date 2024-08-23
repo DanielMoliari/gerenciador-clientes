@@ -3,11 +3,12 @@ import laravel from "laravel-vite-plugin";
 import react from "@vitejs/plugin-react";
 
 export default defineConfig({
-    base: "https://gerenciador-clientes-daniel-ddcba2d51b3b.herokuapp.com/", // Garante que os caminhos gerados são relativos ao domínio base
+    base: "/",
     plugins: [
         laravel({
             input: ["resources/js/app.jsx"],
             refresh: true,
+            buildDirectory: "build", // Certifica que o build vá para a pasta correta
         }),
         react(),
     ],
@@ -22,6 +23,6 @@ export default defineConfig({
         },
     },
     server: {
-        https: true, // Adicione isso se estiver desenvolvendo localmente
+        https: true,
     },
 });

@@ -1,13 +1,12 @@
 import { Head, useForm } from "@inertiajs/react";
 import Layout from "../Layouts/Layout";
 import { useState } from "react";
-import { validarCPF } from "../Utils/validators"; // Ajuste o caminho conforme necessário
-
+import { formatarFormCPF, validateForm } from "../Utils/validators";
 function Editar({ cliente }) {
     const { data, setData, put, errors, processing } = useForm({
         nome: cliente.nome || "",
         email: cliente.email || "",
-        cpf: cliente.cpf || "",
+        cpf: cliente.cpf ? formatarFormCPF(cliente.cpf) : "",
     });
 
     const [localErrors, setLocalErrors] = useState({});
@@ -18,39 +17,17 @@ function Editar({ cliente }) {
     }
 
     function handleCpfChange(e) {
-        const value = e.target.value.replace(/\D/g, "");
+        const value = formatarFormCPF(e.target.value);
         setData("cpf", value);
-    }
-
-    function validateForm() {
-        let errors = {};
-
-        if (!data.nome.trim()) {
-            errors.nome = "Nome é obrigatório.";
-        }
-
-        if (!data.email.trim()) {
-            errors.email = "Email é obrigatório.";
-        } else if (!/\S+@\S+\.\S+/.test(data.email)) {
-            errors.email = "Email inválido.";
-        }
-
-        if (!data.cpf.trim()) {
-            errors.cpf = "CPF é obrigatório.";
-        } else if (data.cpf.length !== 11) {
-            errors.cpf = "CPF deve ter 11 dígitos.";
-        } else if (!validarCPF(data.cpf)) {
-            errors.cpf = "CPF inválido.";
-        }
-
-        setLocalErrors(errors);
-        return Object.keys(errors).length === 0;
     }
 
     function submit(e) {
         e.preventDefault();
 
-        if (validateForm()) {
+        const validationErrors = validateForm(data);
+        setLocalErrors(validationErrors);
+
+        if (Object.keys(validationErrors).length === 0) {
             put(`/clientes/${cliente.id}`);
         }
     }
@@ -127,6 +104,7 @@ function Editar({ cliente }) {
                                         : ""
                                 }`}
                                 placeholder="Digite o CPF do cliente"
+                                maxLength={14}
                             />
                             {(localErrors.cpf || errors.cpf) && (
                                 <div className="invalid-feedback">

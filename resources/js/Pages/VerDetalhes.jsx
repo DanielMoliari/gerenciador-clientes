@@ -1,6 +1,7 @@
 import { Head, Link, useForm } from "@inertiajs/react";
 import Layout from "../Layouts/Layout";
 import { useState } from "react";
+import { verCPF } from "../Utils/validators";
 
 function VerDetalhes({ cliente }) {
     const { delete: destroy } = useForm();
@@ -24,7 +25,7 @@ function VerDetalhes({ cliente }) {
                         <strong>Email:</strong> {cliente.email}
                     </h5>
                     <h5 className="card-text">
-                        <strong>CPF:</strong> {cliente.cpf}
+                        <strong>CPF:</strong> {verCPF(cliente.cpf)}
                     </h5>
                     <p className="card-text">
                         <small className="text-muted">

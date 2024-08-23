@@ -1,6 +1,7 @@
 import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import Layout from "../Layouts/Layout";
 import { useState } from "react";
+import { verCPF } from "../Utils/validators";
 
 function Clientes({ clientes }) {
     const { delete: destroy } = useForm();
@@ -83,14 +84,12 @@ function Clientes({ clientes }) {
                                     onChange={(e) => {
                                         const value = e.target.value;
                                         if (searchField === "cpf") {
-                                            // Permitir apenas números para CPF
                                             const numericValue = value.replace(
                                                 /\D/g,
                                                 ""
                                             );
                                             setSearchTerm(numericValue);
                                         } else if (searchField === "nome") {
-                                            // Permitir apenas letras e espaços para Nome
                                             const lettersValue = value.replace(
                                                 /[^a-zA-Z\s]/g,
                                                 ""
@@ -127,7 +126,7 @@ function Clientes({ clientes }) {
                                                         <span className="fw-bold">
                                                             CPF:
                                                         </span>{" "}
-                                                        {cliente.cpf}
+                                                        {verCPF(cliente.cpf)}
                                                     </p>
                                                     <div className="d-flex justify-content-end">
                                                         <Link

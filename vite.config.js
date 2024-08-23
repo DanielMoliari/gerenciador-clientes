@@ -3,7 +3,7 @@ import laravel from "laravel-vite-plugin";
 import react from "@vitejs/plugin-react";
 
 export default defineConfig({
-    base: "/", // Garante que os caminhos gerados são relativos ao domínio base
+    base: "https://gerenciador-clientes-daniel-ddcba2d51b3b.herokuapp.com/", // Garante que os caminhos gerados são relativos ao domínio base
     plugins: [
         laravel({
             input: ["resources/js/app.jsx"],
@@ -20,5 +20,8 @@ export default defineConfig({
                 chunkFileNames: "assets/[name]-[hash].js",
             },
         },
+    },
+    server: {
+        https: true, // Adicione isso se estiver desenvolvendo localmente
     },
 });

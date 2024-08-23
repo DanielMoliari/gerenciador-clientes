@@ -3,12 +3,11 @@ import laravel from "laravel-vite-plugin";
 import react from "@vitejs/plugin-react";
 
 export default defineConfig({
-    base: "/",
+    base: "/", // Garante que os caminhos gerados são relativos ao domínio base
     plugins: [
         laravel({
             input: ["resources/js/app.jsx"],
             refresh: true,
-            buildDirectory: "build", // Certifica que o build vá para a pasta correta
         }),
         react(),
     ],
@@ -21,8 +20,5 @@ export default defineConfig({
                 chunkFileNames: "assets/[name]-[hash].js",
             },
         },
-    },
-    server: {
-        https: true,
     },
 });

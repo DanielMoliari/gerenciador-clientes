@@ -7,10 +7,18 @@ function Clientes({ clientes }) {
     const { flash } = usePage().props;
     const [flashMsg, setFlashMsg] = useState(flash.message);
     const { component } = usePage();
+    const [searchTerm, setSearchTerm] = useState("");
+    const [searchField, setSearchField] = useState("nome");
 
     setTimeout(() => {
         setFlashMsg(null);
     }, 2000);
+
+    const filteredClientes = clientes.data.filter((cliente) => {
+        return cliente[searchField]
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase());
+    });
 
     return (
         <>
@@ -52,8 +60,29 @@ function Clientes({ clientes }) {
                     </div>
                 </div>
 
+                <div className="mb-4">
+                    <div className="input-group">
+                        <select
+                            className="form-select"
+                            value={searchField}
+                            onChange={(e) => setSearchField(e.target.value)}
+                        >
+                            <option value="nome">Nome</option>
+                            <option value="email">Email</option>
+                            <option value="cpf">CPF</option>
+                        </select>
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder={`Buscar por ${searchField}`}
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
+                </div>
+
                 <div className="row">
-                    {clientes.data.map((cliente) => (
+                    {filteredClientes.map((cliente) => (
                         <div key={cliente.id} className="col-md-4 mb-4">
                             <div className="card shadow-sm h-100">
                                 <div className="card-body">

@@ -12,7 +12,7 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        $clientes = Cliente::latest()->paginate(6);
+        $clientes = Cliente::latest()->paginate(9);
         return inertia('Clientes', ['clientes' => $clientes]);
     }
 

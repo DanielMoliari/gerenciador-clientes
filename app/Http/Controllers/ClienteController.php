@@ -13,9 +13,6 @@ class ClienteController extends Controller
      */
     public function index()
     {
-
-        URL::forceScheme('https');
-
         $clientes = Cliente::latest()->paginate(9);
         return inertia('Clientes', ['clientes' => $clientes]);
     }

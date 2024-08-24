@@ -152,10 +152,7 @@ function Clientes({ clientes }) {
                                         link.url ? (
                                             <Link
                                                 key={link.label}
-                                                href={link.url.replace(
-                                                    /^http:\/\//,
-                                                    "https://"
-                                                )}
+                                                href={link.url}
                                                 dangerouslySetInnerHTML={{
                                                     __html: link.label,
                                                 }}

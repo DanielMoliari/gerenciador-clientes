@@ -147,7 +147,7 @@ function Clientes({ clientes }) {
                                     ))}
                                 </div>
 
-                                <div className="d-flex justify-content-center py-4">
+                                <div className="d-flex justify-content-center py-4 flex-wrap">
                                     {clientes.links.map((link) =>
                                         link.url ? (
                                             <Link
@@ -159,7 +159,7 @@ function Clientes({ clientes }) {
                                                 dangerouslySetInnerHTML={{
                                                     __html: link.label,
                                                 }}
-                                                className={`btn btn-outline-dark mx-2 ${
+                                                className={`btn btn-outline-dark mx-2 mb-2 ${
                                                     link.active ? "active" : ""
                                                 }`}
                                             />
@@ -169,7 +169,7 @@ function Clientes({ clientes }) {
                                                 dangerouslySetInnerHTML={{
                                                     __html: link.label,
                                                 }}
-                                                className="btn btn-light mx-2"
+                                                className="btn btn-light mx-2 mb-2"
                                             />
                                         )
                                     )}
@@ -198,12 +198,9 @@ function Clientes({ clientes }) {
                     filteredClientes.length === 0 && (
                         <div className="alert alert-warning" role="alert">
                             <h4 className="alert-heading">
-                                Nenhum Cliente Registrado
+                                Nenhum Cliente Cadastrado
                             </h4>
-                            <p>
-                                Atualmente, não há clientes registrados. Volte
-                                mais tarde para verificar.
-                            </p>
+                            <p>Cadastre seu primeiro cliente!</p>
                         </div>
                     )}
             </div>

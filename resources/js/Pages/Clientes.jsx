@@ -23,7 +23,12 @@ function Clientes({ clientes }) {
 
     return (
         <>
-            <Head title={component} />
+            <Head title={component}>
+                <meta
+                    http-equiv="Content-Security-Policy"
+                    content="upgrade-insecure-requests"
+                />
+            </Head>
 
             <div className="container mt-4">
                 <div className="d-flex justify-content-between align-items-center mb-4">

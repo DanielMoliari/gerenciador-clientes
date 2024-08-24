@@ -13,6 +13,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Cliente::factory(20)->create();
+        // Cliente::truncate();
+
+        Cliente::factory(2)->create();
     }
 }
